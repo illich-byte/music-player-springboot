@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мій Плеєр</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 40px; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #4CAF50; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        audio { vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+    <h1>🎵 Мій Музичний Плейлист</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Назва пісні</th>
+                <th>Жанр</th>
+                <th>Прослухати</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="song : ${songs}">
+                <td th:text="${song.title}">Назва</td>
+                <td th:text="${song.genre}">Жанр</td>
+                <td>
+                    <audio controls class="music-player">
+                        <source th:src="@{'/music/' + ${song.fileName}}" type="audio/mpeg">
+                        Ваш браузер не підтримує аудіоелемент.
+                    </audio>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Скрипт, який дозволяє грати лише одній пісні одночасно
+        const players = document.querySelectorAll('.music-player');
+
+        players.forEach(player => {
+            player.addEventListener('play', () => {
+                // Зупиняємо всі інші плеєри, крім того, який щойно запустили
+                players.forEach(otherPlayer => {
+                    if (otherPlayer !== player) {
+                        otherPlayer.pause();
+                        otherPlayer.currentTime = 0; // Скидає на початок (за бажанням можна прибрати цю лінію, щоб просто була пауза)
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
