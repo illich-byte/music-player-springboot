@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  music-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot-music-container
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
